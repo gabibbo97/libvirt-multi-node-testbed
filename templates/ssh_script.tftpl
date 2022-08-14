@@ -1,0 +1,30 @@
+#!/bin/sh
+availableNodes() {
+  # List the available nodes
+  echo "Available nodes:"
+%{ for node in sort(nodes) ~}
+  echo "  ${node} => ${node_ips_map[node]}"
+%{ endfor ~}
+}
+connectSSH() {
+  # Perform connection to host via SSH
+  SSH_KEY_PATH="${ssh_key_filename}"
+  exec ssh \
+    -o Compression=no \
+    -o UserKnownHostsFile=/dev/null \
+    -o StrictHostKeyChecking=no \
+    -o ServerAliveCountMax=10 \
+    -o ServerAliveInterval=6 \
+    -i "$SSH_KEY_PATH" \
+    "$@"
+}
+# Connect to the provided node name
+case $1 in
+  # Known nodes
+%{ for node in nodes ~}
+  ${node}) shift; connectSSH test@${node_ips_map[node]} "$@" ;;
+%{ endfor ~}
+  # Error cases
+  "") echo "Specify a node name"; availableNodes; exit 1 ;;
+  *)  echo "Node $1 unavailable"; availableNodes; exit 1 ;;
+esac
