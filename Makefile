@@ -1,7 +1,9 @@
+TF_APPLY_ARGS :=
+
 .PHONY: up
 up: init
 	echo 1 | sudo tee /sys/kernel/mm/ksm/run > /dev/null
-	terraform apply -auto-approve
+	terraform apply -auto-approve $(TF_APPLY_ARGS)
 
 .PHONY: down
 down:
@@ -9,7 +11,7 @@ down:
 
 .PHONY: init
 init:
-	terraform init 
+	terraform init -upgrade
 
 .PHONY: restart
 restart:

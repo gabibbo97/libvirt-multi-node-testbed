@@ -77,4 +77,5 @@ resource "libvirt_domain" "test_domain" {
         hostname = each.value
         wait_for_lease = false
     }
+
 }
