@@ -1,4 +1,7 @@
 TF_APPLY_ARGS :=
+ifeq ($(SINGLE_NODE),y)
+	TF_APPLY_ARGS = -var 'nodes=["node1"]'
+endif
 
 .PHONY: up
 up: init

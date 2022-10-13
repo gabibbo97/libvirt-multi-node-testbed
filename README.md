@@ -10,6 +10,7 @@ This allows to set up easy local testbeds using libvirt and Terraform
 ## Usage
 
 - `make up` to start up the testbed
+  - `make up SINGLE_NODE=y` to use only a single node
 - `make down` to stop the testbed
 - `make restart` to recreate the testbed machines
 
