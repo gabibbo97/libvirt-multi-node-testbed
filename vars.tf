@@ -78,7 +78,7 @@ variable "extra_disks_size_gib" {
 variable "image_url" {
   description = "Cloud-init image to use"
   type = string
-  default = "https://cloud-images.ubuntu.com/jammy/20221011/jammy-server-cloudimg-amd64.img"
+  default = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2"
 }
 
 # Storage

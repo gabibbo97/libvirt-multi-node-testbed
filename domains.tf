@@ -78,4 +78,7 @@ resource "libvirt_domain" "test_domain" {
         wait_for_lease = false
     }
 
+    # Agent
+    qemu_agent = true
+
 }

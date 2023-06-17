@@ -5,7 +5,7 @@ resource "local_file" "ansible_inventory" {
     node_ips_map = local.node_ips_map
     ssh_key_filename = abspath(local_sensitive_file.ssh_key.filename)
   })
-  filename = "${path.module}/outputs/ansible_inventory"
+  filename = "${path.module}/outputs/ansible_inventory.yml"
 }
 
 # SSH script
