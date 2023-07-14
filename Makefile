@@ -1,7 +1,5 @@
-IMAGE ?= debian-12
-
-ifneq ($(IMAGE),)
-TF_IMAGE_ARGS := -var image_name='$(IMAGE)' -var image_url=''
+ifndef TF_IMAGE_ARGS
+TF_IMAGE_ARGS := -var image_name='debian-12' -var image_url=''
 endif
 
 TF_ARGS += $(TF_IMAGE_ARGS)

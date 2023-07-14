@@ -44,11 +44,19 @@ variable "image_url" {
   description = "Cloud-init image URL to use"
   type = string
   nullable = true
+  default = null
 }
 variable "image_name" {
   description = "Cloud-init image name to use"
   type = string
   nullable = true
+  default = null
+}
+variable "attach_cd_path" {
+  description = "CDROM path to use"
+  type = string
+  nullable = true
+  default = null
 }
 
 # Network settings

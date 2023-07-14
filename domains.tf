@@ -9,6 +9,7 @@ resource "libvirt_cloudinit_disk" "test_cloudinit" {
     network_config = templatefile("templates/cloud-init-net.cfg", {
         address = "${local.node_ips_map[each.value]}/${local.node_cidr_bits}"
         gateway = cidrhost(var.node_cidr, 1)
+        mac = local.node_mac_map[each.value]
         mtu = var.libvirt_network_mtu
     })
     pool = libvirt_pool.test_pool.name
@@ -52,12 +53,29 @@ resource "libvirt_domain" "test_domain" {
         target_port = "0"
     }
 
+    # Boot
+    boot_device {
+        dev = var.attach_cd_path != null ? [ "hd", "cdrom" ] : [ "hd" ]
+    }
+
     # Disks
+    ## Cloud-init
     cloudinit = libvirt_cloudinit_disk.test_cloudinit[each.value].id
 
+    ## CDs
+    dynamic "disk" {
+        for_each = compact([ local.cd_path ])
+        content {
+            file = disk.value
+        }
+    }
+
+    ## Root disk
     disk {
         volume_id = libvirt_volume.test_rootdisk[each.value].id
     }
+
+    ## Spare disks
     dynamic "disk" {
         for_each = range(var.extra_disks_count)
         content {
@@ -71,11 +89,17 @@ resource "libvirt_domain" "test_domain" {
         addresses = [
             local.node_ips_map[each.value]
         ]
-        hostname = each.value
+        mac = local.node_mac_map[each.value]
+        hostname = "${each.value}.${var.libvirt_network_domain}"
         wait_for_lease = false
     }
 
     # Agent
     qemu_agent = true
+
+    # Dependencies
+    depends_on = [
+        null_resource.copy_cdrom
+    ]
 
 }
