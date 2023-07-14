@@ -4,12 +4,15 @@ resource "libvirt_network" "test_net" {
     addresses = [
         var.node_cidr
     ]
-    domain = var.libvirt_network_domain
+    # Enable DHCP
     dhcp {
         enabled = true
     }
+    # Enable DNS
+    domain = var.libvirt_network_domain
     dns {
         enabled = true
+        # Forward to upstream
         dynamic "forwarders" {
             for_each = var.dns_forward_addresses
             content {
@@ -17,9 +20,6 @@ resource "libvirt_network" "test_net" {
             }
         }
     }
+    # Set MTU
     mtu = var.libvirt_network_mtu
-}
-
-locals {
-  node_ips_map = { for i, node_name in var.nodes: node_name => cidrhost(var.node_cidr, 10+i*10) }
 }

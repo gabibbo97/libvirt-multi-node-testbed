@@ -9,5 +9,5 @@ resource "libvirt_pool" "test_pool" {
 resource "libvirt_volume" "test_image" {
   name   = "test_image"
   pool = libvirt_pool.test_pool.name
-  source = var.image_url
+  source = local.image_url
 }

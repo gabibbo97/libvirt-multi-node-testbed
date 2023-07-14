@@ -14,10 +14,6 @@ resource "libvirt_cloudinit_disk" "test_cloudinit" {
     pool = libvirt_pool.test_pool.name
 }
 
-locals {
-  node_cidr_bits = split("/", var.node_cidr)[1]
-}
-
 resource "libvirt_volume" "test_rootdisk" {
     for_each = toset(var.nodes)
     name = "${each.value}_rootdisk.qcow2"
@@ -41,6 +37,7 @@ resource "libvirt_volume" "test_sparedisk" {
 resource "libvirt_domain" "test_domain" {
     for_each = toset(var.nodes)
     name = each.value
+    description = "libvirt-multi-node-testbed node ${each.value}"
 
     vcpu = var.cpu_count
     memory = var.memory_mb
@@ -48,7 +45,7 @@ resource "libvirt_domain" "test_domain" {
     cpu {
         mode = "host-model"
     }
-    
+
     # Console
     console {
         type = "pty"

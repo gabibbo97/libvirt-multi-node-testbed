@@ -1,6 +1,6 @@
 # Ansible
 resource "local_file" "ansible_inventory" {
-  content = templatefile("templates/ansible_inventory.tftpl", {
+  content = templatefile("templates/ansible_inventory.yml.tftpl", {
     nodes = var.nodes
     node_ips_map = local.node_ips_map
     ssh_key_filename = abspath(local_sensitive_file.ssh_key.filename)
