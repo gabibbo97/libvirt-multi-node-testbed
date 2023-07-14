@@ -14,6 +14,7 @@ else ifdef TRI_NODE
 else ifdef PENTA_NODE
 	TF_ARGS += -var 'nodes=["node1","node2","node3","node4","node5"]'
 endif
+TF_ARGS += $(TF_EXTRA_ARGS)
 
 .PHONY: up
 up: init
