@@ -1,20 +1,3 @@
-resource "libvirt_cloudinit_disk" "test_cloudinit" {
-    for_each = toset(var.nodes)
-    name = "${each.value}_cloudinit.raw"
-    user_data = templatefile("templates/cloud-init.cfg", {
-        hostname = each.value
-        domain = var.libvirt_network_domain
-        ssh_key = chomp(tls_private_key.ssh_key.public_key_openssh)
-    })
-    network_config = templatefile("templates/cloud-init-net.cfg", {
-        address = "${local.node_ips_map[each.value]}/${local.node_cidr_bits}"
-        gateway = cidrhost(var.node_cidr, 1)
-        mac = local.node_mac_map[each.value]
-        mtu = var.libvirt_network_mtu
-    })
-    pool = libvirt_pool.test_pool.name
-}
-
 resource "libvirt_volume" "test_rootdisk" {
     for_each = toset(var.nodes)
     name = "${each.value}_rootdisk.qcow2"
@@ -96,6 +79,15 @@ resource "libvirt_domain" "test_domain" {
 
     # Agent
     qemu_agent = true
+
+    # UEFI
+    firmware = var.uefi_firmware
+    dynamic "nvram" {
+        for_each = try([coalesce(var.uefi_firmware)], [])
+        content {
+          file = "${var.libvirt_pool_dir}/${each.value}.nvram"
+        }
+    }
 
     # Dependencies
     depends_on = [

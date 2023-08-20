@@ -4,6 +4,7 @@ resource "local_file" "ansible_inventory" {
     nodes = var.nodes
     node_ips_map = local.node_ips_map
     ssh_key_filename = abspath(local_sensitive_file.ssh_key.filename)
+    username = var.username
   })
   filename = "${path.module}/outputs/ansible_inventory.yml"
 }
@@ -14,6 +15,7 @@ resource "local_file" "ssh_script" {
     nodes = var.nodes
     node_ips_map = local.node_ips_map
     ssh_key_filename = abspath(local_sensitive_file.ssh_key.filename)
+    username = var.username
   })
   filename = "${path.module}/outputs/ssh_script.sh"
   file_permission = "0700"

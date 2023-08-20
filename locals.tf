@@ -6,6 +6,8 @@ locals {
     images_map = {
         # Debian
         "debian-12"   = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2"
+        # Fedora
+        "fedora-38"   = "https://download.fedoraproject.org/pub/fedora/linux/releases/38/Cloud/x86_64/images/Fedora-Cloud-Base-38-1.6.x86_64.qcow2"
         # Ubuntu
         "ubuntu-2204" = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
     }

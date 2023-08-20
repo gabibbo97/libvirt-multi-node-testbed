@@ -22,7 +22,7 @@ connectSSH() {
 case $1 in
   # Known nodes
 %{ for node in nodes ~}
-  ${node}) shift; connectSSH test@${node_ips_map[node]} "$@" ;;
+  ${node}) shift; connectSSH ${username}@${node_ips_map[node]} "$@" ;;
 %{ endfor ~}
   # Error cases
   "") echo "Specify a node name"; availableNodes; exit 1 ;;

@@ -21,22 +21,10 @@ variable "memory_mb" {
   default = 4096
 }
 
-variable "root_disk_size_gib" {
-  description = "Size in GB of the root disk"
-  type = number
-  default = 100
-}
-
-variable "extra_disks_count" {
-  description = "Number of additional disks to add"
-  type = number
-  default = 0
-}
-
-variable "extra_disks_size_gib" {
-  description = "Size in GB of the additional disks"
-  type = number
-  default = 50
+variable "username" {
+  description = "Username"
+  type = string
+  default = "test"
 }
 
 # Image
@@ -94,6 +82,14 @@ variable "libvirt_network_name" {
   default = "test_net"
 }
 
+# UEFI
+variable "uefi_firmware" {
+  description = "UEFI firmware image"
+  type = string
+  nullable = true
+  default = null
+}
+
 # Storage
 variable "libvirt_pool_name" {
   description = "Storage pool to use"
@@ -105,4 +101,22 @@ variable "libvirt_pool_dir" {
   description = "Storage pool path"
   type = string
   default = "/var/lib/libvirt/test"
+}
+
+variable "root_disk_size_gib" {
+  description = "Size in GB of the root disk"
+  type = number
+  default = 100
+}
+
+variable "extra_disks_count" {
+  description = "Number of additional disks to add"
+  type = number
+  default = 0
+}
+
+variable "extra_disks_size_gib" {
+  description = "Size in GB of the additional disks"
+  type = number
+  default = 50
 }
