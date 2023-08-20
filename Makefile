@@ -5,7 +5,7 @@ TF_IMAGE_ARGS ?= -var image_name='$(IMAGE_NAME)' -var image_url=''
 TF_ARGS += $(TF_IMAGE_ARGS)
 TF_ARGS += $(TF_EXTRA_ARGS)
 
-ifndef NO_UEFI
+ifdef USE_UEFI
 # Check where the OVMF image is
 OVMF_PATH := $(shell \
 	if [ -f /usr/share/OVMF/OVMF_CODE.fd ]; then \
